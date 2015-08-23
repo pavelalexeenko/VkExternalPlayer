@@ -3,8 +3,6 @@
 
 #include <QtWidgets>
 #include <QMediaPlayer>
-#include <QtWinExtras>
-
 
 class MusicPlayerWidget : public QWidget
 {

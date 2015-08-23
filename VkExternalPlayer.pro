@@ -6,11 +6,13 @@
 TARGET = VkExternalPlayer
 TEMPLATE = app
 
-QT       += core gui widgets winextras multimedia
+QT       += core gui widgets multimedia webkitwidgets
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    musicplayerwidget.cpp
+    musicplayerwidget.cpp \
+    vk/objects/audioitem.cpp
 
 HEADERS  += mainwindow.h \
-    musicplayerwidget.h
+    musicplayerwidget.h \
+    vk/objects/audioitem.h

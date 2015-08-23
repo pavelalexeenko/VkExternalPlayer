@@ -2,7 +2,7 @@
 #include "musicplayerwidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
 {
     MusicPlayerWidget *musicPlayerWidget = new MusicPlayerWidget(this);
     setCentralWidget(musicPlayerWidget);
