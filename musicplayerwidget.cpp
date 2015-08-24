@@ -117,6 +117,7 @@ void MusicPlayerWidget::createWidgets()
     volumeSlider->setToolTip(tr("Adjust volume"));
     volumeSlider->setRange(0, 100);
     volumeSlider->setValue(mediaPlayer.volume());
+    volumeSlider->setMaximumWidth(100);
     connect(volumeSlider, &QSlider::valueChanged, &mediaPlayer, &QMediaPlayer::setVolume);
 
     positionSlider = new QSlider(Qt::Horizontal, this);
