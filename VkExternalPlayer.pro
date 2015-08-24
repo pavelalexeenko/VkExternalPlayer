@@ -11,8 +11,12 @@ QT       += core gui widgets multimedia webkitwidgets
 SOURCES += main.cpp\
         mainwindow.cpp \
     musicplayerwidget.cpp \
-    vk/objects/audioitem.cpp
+    vk/objects/audioitem.cpp \
+    vk/instancefactory.cpp \
+    vk/services/audioservice.cpp
 
 HEADERS  += mainwindow.h \
     musicplayerwidget.h \
-    vk/objects/audioitem.h
+    vk/objects/audioitem.h \
+    vk/instancefactory.h \
+    vk/services/audioservice.h
