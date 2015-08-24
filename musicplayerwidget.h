@@ -35,6 +35,15 @@ private:
     QSlider *positionSlider;
     QLabel *positionLabel;
     QLabel *infoLabel;
+
+protected:
+    QSize sizeHint() const
+    {
+        QSize size = QWidget::sizeHint();
+
+        return QSize(500, 80);
+    }
+
 };
 
 #endif // MUSICPLAYERWIDGET_H
