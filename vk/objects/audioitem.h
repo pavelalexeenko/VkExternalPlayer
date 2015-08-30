@@ -50,7 +50,6 @@ public:
             data.operator=(audioItem.data);
         return *this;
     }
-    ~AudioItem();
 
     void setId(int id){data->id = id;}
     void setOwnerId(int ownerId){data->ownerId = ownerId;}

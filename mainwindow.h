@@ -2,8 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
-#include <QUrl>
-#include <QWebView>
 
 class MainWindow : public QWidget
 {
@@ -12,6 +10,9 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private slots:
+    void getSongs();
 };
 
 #endif // MAINWINDOW_H

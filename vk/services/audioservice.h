@@ -1,13 +1,16 @@
 #ifndef AUDIOSERVICE_H
 #define AUDIOSERVICE_H
 
-#include "../objects/audioitem.h"
 #include <QList>
+#include <QObject>
 
-class AudioService
+class AudioItem;
+
+class AudioService : public QObject
 {
+    Q_OBJECT
 public:
-    AudioService();
+    explicit AudioService(QObject *parent = 0);
 
     QList<AudioItem> getAllContactAudio(int ownerId);
     QList<AudioItem> getContactAudio(int ownerId, int count);
