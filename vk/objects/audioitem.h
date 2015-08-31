@@ -72,6 +72,7 @@ public:
 
     void read(const QJsonObject &json);
     void write(QJsonObject &json) const;
+    QString toString() const;
 
 private:
     QSharedDataPointer<AudioItemData> data;

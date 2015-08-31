@@ -25,5 +25,5 @@ MainWindow::~MainWindow()
 
 void MainWindow::getSongs()
 {
-    InstanceFactory<AudioService>::getInstance()->getAllContactAudio(17849865);
+    InstanceFactory<AudioService>::getInstance()->getCurrentUsersAllContactAudio();
 }

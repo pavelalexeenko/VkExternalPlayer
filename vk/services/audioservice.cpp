@@ -12,6 +12,11 @@
 #include <QEventLoop>
 #include <QByteArray>
 
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
+
 AudioService::AudioService(QObject *parent) : QObject(parent)
 {
 
@@ -56,7 +61,7 @@ QList<AudioItem> AudioService::getContactAudio(int ownerId, int count)
 
     qDebug() << url.toDisplayString();
 
-   // NotYetImplementedVkUrlExecuteQueryService(url);
+    // NotYetImplementedVkUrlExecuteQueryService(url);
 
     QNetworkAccessManager* manager = new QNetworkAccessManager();//создаем объект класса для работы с http
     QNetworkReply* reply = manager->get(QNetworkRequest(QUrl(url)));//выполняем гет запрос и записываем ответ
@@ -74,11 +79,47 @@ QList<AudioItem> AudioService::getContactAudio(int ownerId, int count)
 
     qDebug() << QString::fromStdString(answer.toStdString());
 
-    return QList<AudioItem>();
+    QList<AudioItem> list;
+
+    QJsonDocument loadDoc(QJsonDocument::fromJson(answer));
+    QJsonObject json = loadDoc.object();
+    qDebug() << "\n\n"<<json;
+
+    QJsonValue response = json.value("response");
+    QJsonObject responseObj = response.toObject();
+    qDebug() << "\n"<<responseObj;
+
+    QStringList keys1 = responseObj.keys();
+    foreach(QString key, keys1)
+        qDebug() << key;
+
+    qDebug() << responseObj.value("count");
+    QJsonObject itemArrayObj = responseObj.value("items").toObject();
+
+    QStringList keys = itemArrayObj.keys();
+    foreach(QString key, keys)
+        qDebug() << key;
+
+    QJsonArray songArray = json["response"].toArray();
+
+    for (int songIndex = 0; songIndex < songArray.size(); ++songIndex)
+    {
+        QJsonObject songObject = songArray[songIndex].toObject();
+        AudioItem audioItem;
+        audioItem.read(songObject);
+        list.append(audioItem);
+    }
+
+    for (auto song : list)
+    {
+        qDebug() << song.toString();
+    }
+
+    return list;
 }
 
 int AudioService::getAudioCount(int ownerId)
 {
-    return 10;
+    return 2;
 }
 

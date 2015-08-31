@@ -1,6 +1,5 @@
 #include "audioitem.h"
 
-
 void AudioItem::read(const QJsonObject &json)
 {
     setId(json["id"].toInt());
@@ -15,4 +14,16 @@ void AudioItem::read(const QJsonObject &json)
 void AudioItem::write(QJsonObject &json) const
 {
 
+}
+
+QString AudioItem::toString() const
+{
+    QString str;
+    str += getArtist();
+    str += " - ";
+    str += getTitle() ;
+    str += " - ";
+    str += getDuration();
+
+    return str;
 }
