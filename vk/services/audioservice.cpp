@@ -17,6 +17,21 @@ AudioService::AudioService(QObject *parent) : QObject(parent)
 
 }
 
+QList<AudioItem> AudioService::getCurrentUsersAllContactAudio()
+{
+    return getAllContactAudio(InstanceFactory<LoginService>::getInstance()->getUserId());
+}
+
+QList<AudioItem> AudioService::getCurrentUsersContactAudio(int count)
+{
+    return getContactAudio(InstanceFactory<LoginService>::getInstance()->getUserId(), count);
+}
+
+int AudioService::getCurrentUsersAudioCount()
+{
+    return getAudioCount(InstanceFactory<LoginService>::getInstance()->getUserId());
+}
+
 QList<AudioItem> AudioService::getAllContactAudio(int ownerId)
 {
     return getContactAudio(ownerId, getAudioCount(ownerId));
@@ -41,7 +56,6 @@ QList<AudioItem> AudioService::getContactAudio(int ownerId, int count)
 
     qDebug() << url.toDisplayString();
 
-    //access_token=  //нужен в конце каждого метода
    // NotYetImplementedVkUrlExecuteQueryService(url);
 
     QNetworkAccessManager* manager = new QNetworkAccessManager();//создаем объект класса для работы с http
@@ -60,12 +74,11 @@ QList<AudioItem> AudioService::getContactAudio(int ownerId, int count)
 
     qDebug() << QString::fromStdString(answer.toStdString());
 
-
     return QList<AudioItem>();
 }
 
 int AudioService::getAudioCount(int ownerId)
 {
-    return 4;
+    return 10;
 }
 

@@ -12,6 +12,10 @@ class AudioService : public QObject
 public:
     explicit AudioService(QObject *parent = 0);
 
+    QList<AudioItem> getCurrentUsersAllContactAudio();
+    QList<AudioItem> getCurrentUsersContactAudio(int count);
+    int getCurrentUsersAudioCount();
+
     QList<AudioItem> getAllContactAudio(int ownerId);
     QList<AudioItem> getContactAudio(int ownerId, int count);
     int getAudioCount(int ownerId);

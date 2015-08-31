@@ -1,8 +1,9 @@
 #ifndef AUDIOITEM_H
 #define AUDIOITEM_H
 
-#include <QString>
 #include <QUrl>
+#include <QJsonObject>
+#include <QString>
 #include <QSharedData>
 
 class AudioItem
@@ -68,6 +69,9 @@ public:
     QUrl getUrl() const {return data->url;}
     int getLyricsId() const {return data->lyricsId;}
     int getAlbumId() const {return data->albumId;}
+
+    void read(const QJsonObject &json);
+    void write(QJsonObject &json) const;
 
 private:
     QSharedDataPointer<AudioItemData> data;

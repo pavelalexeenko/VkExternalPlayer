@@ -10,10 +10,15 @@ public:
     explicit LoginService(QObject *parent = 0);
 
     QString getToken();
+    int getExpiresIn();
+    int getUserId();
 
 private slots:
     void authSuccess(QString token, int expiresIn, int userId);
     void authFail(QString error, QString errorDescription);
+
+private:
+    void login();
 
 private:
     QString _token;
