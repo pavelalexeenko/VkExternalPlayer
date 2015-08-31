@@ -34,7 +34,6 @@ VkLoginDialog::VkLoginDialog(QWidget *parent) : QDialog(parent)
 void VkLoginDialog::getTokenFromUrl(const QUrl &url)
 {
     qDebug() << __FUNCTION__;
-    qDebug() << "\n" << url.toString();
     QUrlQuery query(QUrl(QString(url.toString()).replace("#", "?")));
 
     if (query.hasQueryItem("error"))

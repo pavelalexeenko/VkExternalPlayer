@@ -1,21 +1,31 @@
 #include "mainwindow.h"
-#include "musicplayerwidget.h"
 #include <vk/vklogindialog.h>
 #include <vk/instancefactory.h>
 #include <vk/services/audioservice.h>
-#include <vk/objects/audioitem.h>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    MusicPlayerWidget *musicPlayerWidget = new MusicPlayerWidget(this);
+    musicPlayerWidget = new MusicPlayerWidget(this);
 
-    QPushButton *btn = new QPushButton(this);
-    connect(btn, SIGNAL(clicked(bool)), this, SLOT(getSongs()));
+    QStringList headers;
+    headers << tr("Title") << tr("Artist") << tr("Album") << tr("Year");
+
+    table = new QTableWidget(0, 4);
+    table->setHorizontalHeaderLabels(headers);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setFrameStyle(QFrame::NoFrame);
+    table->setShowGrid(false);
+
+    connect(table, SIGNAL(cellPressed(int,int)), this, SLOT(playSong(int,int)));
+
+    getSongs();
 
     QGridLayout *layout = new QGridLayout(this);
     layout->addWidget(musicPlayerWidget, 0, 0, Qt::AlignTop);
-    layout->addWidget(btn, 0, 1);
+    layout->addWidget(table, 1, 0);
 }
 
 MainWindow::~MainWindow()
@@ -25,5 +35,29 @@ MainWindow::~MainWindow()
 
 void MainWindow::getSongs()
 {
-    InstanceFactory<AudioService>::getInstance()->getCurrentUsersAllContactAudio();
+    list = InstanceFactory<AudioService>::getInstance()->getCurrentUsersAllContactAudio();
+    for (auto item : list)
+    {
+        QTableWidgetItem *artistItem = new QTableWidgetItem(item.getArtist());
+        artistItem->setFlags(artistItem->flags() ^ Qt::ItemIsEditable);
+        QTableWidgetItem *titleItem = new QTableWidgetItem(item.getTitle());
+        titleItem->setFlags(titleItem->flags() ^ Qt::ItemIsEditable);
+        QTableWidgetItem *durationItem = new QTableWidgetItem(item.getDuration());
+        durationItem->setFlags(durationItem->flags() ^ Qt::ItemIsEditable);
+        QTableWidgetItem *urlItem = new QTableWidgetItem(item.getUrl().toString());
+        urlItem->setFlags(urlItem->flags() ^ Qt::ItemIsEditable);
+
+        int currentRow = table->rowCount();
+        table->insertRow(currentRow);
+        table->setItem(currentRow, 0, artistItem);
+        table->setItem(currentRow, 1, titleItem);
+        table->setItem(currentRow, 2, durationItem);
+        table->setItem(currentRow, 3, urlItem);
+    }
+}
+
+void MainWindow::playSong(int row, int column)
+{
+    QTableWidgetItem *item = table->item(row, 3);
+    musicPlayerWidget->playUrl(item->text());
 }

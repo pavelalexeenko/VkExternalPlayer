@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QString>
 #include <QSharedData>
+#include <QTime>
 
 class AudioItem
 {
@@ -65,7 +66,7 @@ public:
     int getOwnerId() const {return data->ownerId;}
     QString getArtist() const {return data->artist;}
     QString getTitle() const {return data->title;}
-    int getDuration() const {return data->duration;}
+    QString getDuration() const {return QDateTime::fromTime_t(data->duration).toUTC().toString("hh:mm:ss");}
     QUrl getUrl() const {return data->url;}
     int getLyricsId() const {return data->lyricsId;}
     int getAlbumId() const {return data->albumId;}

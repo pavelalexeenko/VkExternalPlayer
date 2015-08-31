@@ -16,6 +16,7 @@ public slots:
     void togglePlayback();
     void openFile();
     void playFile(const QString& filePath);
+    void playUrl(const QString& url);
 
 private slots:
     void setPosition(int position);

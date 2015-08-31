@@ -59,8 +59,6 @@ QList<AudioItem> AudioService::getContactAudio(int ownerId, int count)
     urlQuery.addQueryItem("access_token", InstanceFactory<LoginService>::getInstance()->getToken());
     url.setQuery(urlQuery);
 
-    qDebug() << url.toDisplayString();
-
     // NotYetImplementedVkUrlExecuteQueryService(url);
 
     QNetworkAccessManager* manager = new QNetworkAccessManager();//создаем объект класса для работы с http
@@ -77,34 +75,18 @@ QList<AudioItem> AudioService::getContactAudio(int ownerId, int count)
 
     delete manager;
 
-    qDebug() << QString::fromStdString(answer.toStdString());
-
     QList<AudioItem> list;
 
     QJsonDocument loadDoc(QJsonDocument::fromJson(answer));
     QJsonObject json = loadDoc.object();
-    qDebug() << "\n\n"<<json;
-
     QJsonValue response = json.value("response");
     QJsonObject responseObj = response.toObject();
-    qDebug() << "\n"<<responseObj;
+    QJsonValue itemArrayValue = responseObj.value("items");
+    QJsonArray itemArray = itemArrayValue.toArray();
 
-    QStringList keys1 = responseObj.keys();
-    foreach(QString key, keys1)
-        qDebug() << key;
-
-    qDebug() << responseObj.value("count");
-    QJsonObject itemArrayObj = responseObj.value("items").toObject();
-
-    QStringList keys = itemArrayObj.keys();
-    foreach(QString key, keys)
-        qDebug() << key;
-
-    QJsonArray songArray = json["response"].toArray();
-
-    for (int songIndex = 0; songIndex < songArray.size(); ++songIndex)
+    for (int songIndex = 0; songIndex < itemArray.size(); ++songIndex)
     {
-        QJsonObject songObject = songArray[songIndex].toObject();
+        QJsonObject songObject = itemArray[songIndex].toObject();
         AudioItem audioItem;
         audioItem.read(songObject);
         list.append(audioItem);
@@ -120,6 +102,6 @@ QList<AudioItem> AudioService::getContactAudio(int ownerId, int count)
 
 int AudioService::getAudioCount(int ownerId)
 {
-    return 2;
+    return 100;
 }
 

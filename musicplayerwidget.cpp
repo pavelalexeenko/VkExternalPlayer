@@ -41,6 +41,15 @@ void MusicPlayerWidget::playFile(const QString &filePath)
     mediaPlayer.play();
 }
 
+void MusicPlayerWidget::playUrl(const QString &url)
+{
+    playButton->setEnabled(true);
+    infoLabel->setText("test");
+
+    mediaPlayer.setMedia(QUrl(url));
+    mediaPlayer.play();
+}
+
 void MusicPlayerWidget::setPosition(int position)
 {
     // avoid seeking when the slider value change is triggered from updatePosition()

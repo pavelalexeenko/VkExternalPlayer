@@ -24,6 +24,8 @@ QString AudioItem::toString() const
     str += getTitle() ;
     str += " - ";
     str += getDuration();
+    //str += " - ";
+    //str += getUrl().toString();
 
     return str;
 }

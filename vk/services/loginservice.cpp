@@ -3,10 +3,10 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QEventLoop>
+#include <QTimer>
 
 LoginService::LoginService(QObject *parent)
     : QObject(parent)
-    , _expiresIn(0)
     , _userId(0)
 {
 
@@ -22,14 +22,6 @@ QString LoginService::getToken()
     return _token;
 }
 
-int LoginService::getExpiresIn()
-{
-    if (!_expiresIn)
-        login();
-
-    return _expiresIn;
-}
-
 int LoginService::getUserId()
 {
     if (!_userId)
@@ -43,8 +35,9 @@ void LoginService::authSuccess(QString token, int expiresIn, int userId)
     qDebug() << __FUNCTION__;
 
     _token = token;
-    _expiresIn = expiresIn;
     _userId = userId;
+
+    QTimer::singleShot(expiresIn * 1000, this, SLOT(dropCredentialsDueTheTimeOut()));
 }
 
 void LoginService::authFail(QString error, QString errorDescription)
@@ -52,6 +45,14 @@ void LoginService::authFail(QString error, QString errorDescription)
     qDebug() << __FUNCTION__;
 
     QMessageBox::critical(0, error, errorDescription);
+}
+
+void LoginService::dropCredentialsDueTheTimeOut()
+{
+    _token.clear();
+    _userId = 0;
+
+    qDebug() << "Cleared!";
 }
 
 void LoginService::login()
