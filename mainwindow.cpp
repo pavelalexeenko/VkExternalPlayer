@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     headers << tr("Title") << tr("Artist") << tr("Album") << tr("Year");
 
     table = new QTableWidget(0, 4);
+    table->setColumnHidden(3, true);
     table->setHorizontalHeaderLabels(headers);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
