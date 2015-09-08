@@ -15,7 +15,8 @@ SOURCES += main.cpp\
     vk/instancefactory.cpp \
     vk/services/audioservice.cpp \
     vk/vklogindialog.cpp \
-    vk/services/loginservice.cpp
+    vk/services/loginservice.cpp \
+    vk/services/urlqueryexecuteservice.cpp
 
 HEADERS  += mainwindow.h \
     musicplayerwidget.h \
@@ -23,4 +24,5 @@ HEADERS  += mainwindow.h \
     vk/instancefactory.h \
     vk/services/audioservice.h \
     vk/vklogindialog.h \
-    vk/services/loginservice.h
+    vk/services/loginservice.h \
+    vk/services/urlqueryexecuteservice.h

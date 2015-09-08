@@ -3,17 +3,25 @@
 
 #include <QtWidgets>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 
+class AudioItem;
 class MusicPlayerWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit MusicPlayerWidget(QWidget *parent = 0);
+    ~MusicPlayerWidget();
+
+    void setUpPlaylist(const QList<AudioItem>& songList);
+    void playSongAtIndex(int index);
 
 signals:
 
 public slots:
     void togglePlayback();
+    void forward();
+    void backward();
     void openFile();
     void playFile(const QString& filePath);
     void playUrl(const QString& url);
@@ -29,6 +37,7 @@ private:
     void createWidgets();
 
     QMediaPlayer mediaPlayer;
+    QMediaPlaylist *playlist;
     QPushButton *playButton;
     QPushButton *skipForwardButton;
     QPushButton *skipBackwardButton;

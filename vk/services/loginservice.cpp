@@ -14,8 +14,6 @@ LoginService::LoginService(QObject *parent)
 
 QString LoginService::getToken()
 {
-    qDebug() << __FUNCTION__;
-
     if (_token.isEmpty())
         login();
 
@@ -32,8 +30,6 @@ int LoginService::getUserId()
 
 void LoginService::authSuccess(QString token, int expiresIn, int userId)
 {
-    qDebug() << __FUNCTION__;
-
     _token = token;
     _userId = userId;
 
@@ -42,8 +38,6 @@ void LoginService::authSuccess(QString token, int expiresIn, int userId)
 
 void LoginService::authFail(QString error, QString errorDescription)
 {
-    qDebug() << __FUNCTION__;
-
     QMessageBox::critical(0, error, errorDescription);
 }
 

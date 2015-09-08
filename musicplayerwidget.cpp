@@ -1,7 +1,10 @@
 #include "musicplayerwidget.h"
+#include <QMediaPlaylist>
+#include "vk/objects/audioitem.h"
 
 MusicPlayerWidget::MusicPlayerWidget(QWidget *parent)
     : QWidget(parent)
+    , playlist(new QMediaPlaylist())
 {
     createWidgets();
 
@@ -9,6 +12,33 @@ MusicPlayerWidget::MusicPlayerWidget(QWidget *parent)
     connect(&mediaPlayer, &QMediaPlayer::positionChanged, this, &MusicPlayerWidget::updatePosition);
     connect(&mediaPlayer, &QMediaPlayer::durationChanged, this, &MusicPlayerWidget::updateDuration);
     connect(&mediaPlayer, &QMediaPlayer::stateChanged, this, &MusicPlayerWidget::updateState);
+
+    mediaPlayer.setPlaylist(playlist);
+}
+
+MusicPlayerWidget::~MusicPlayerWidget()
+{
+    delete playlist;
+}
+
+void MusicPlayerWidget::setUpPlaylist(const QList<AudioItem> &songList)
+{
+    playlist->clear();
+    for (auto song : songList)
+        playlist->addMedia(song.getUrl());
+
+    if (!playlist->isEmpty())
+    {
+        playlist->setCurrentIndex(0);
+        playButton->setEnabled(true);
+        skipForwardButton->setEnabled(true);
+        skipBackwardButton->setEnabled(true);
+    }
+}
+
+void MusicPlayerWidget::playSongAtIndex(int index)
+{
+    playlist->setCurrentIndex(index);
 }
 
 void MusicPlayerWidget::togglePlayback()
@@ -19,6 +49,16 @@ void MusicPlayerWidget::togglePlayback()
         mediaPlayer.pause();
     else
         mediaPlayer.play();
+}
+
+void MusicPlayerWidget::forward()
+{
+    playlist->next();
+}
+
+void MusicPlayerWidget::backward()
+{
+    playlist->previous();
 }
 
 void MusicPlayerWidget::openFile()
@@ -44,8 +84,6 @@ void MusicPlayerWidget::playFile(const QString &filePath)
 void MusicPlayerWidget::playUrl(const QString &url)
 {
     playButton->setEnabled(true);
-    infoLabel->setText("test");
-
     mediaPlayer.setMedia(QUrl(url));
     mediaPlayer.play();
 }
@@ -108,13 +146,13 @@ void MusicPlayerWidget::createWidgets()
     skipBackwardButton->setEnabled(false);
     skipBackwardButton->setToolTip(tr("Skip Backward"));
     skipBackwardButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
-   // connect(skipBackwardButton, &QAbstractButton::clicked, this, &MusicPlayerWidget::togglePlayback);
+    connect(skipBackwardButton, &QAbstractButton::clicked, this, &MusicPlayerWidget::backward);
 
     skipForwardButton = new QPushButton(this);
     skipForwardButton->setEnabled(false);
     skipForwardButton->setToolTip(tr("Skip Forward"));
     skipForwardButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
-   // connect(skipForwardButton, &QAbstractButton::clicked, this, &MusicPlayerWidget::togglePlayback);
+    connect(skipForwardButton, &QAbstractButton::clicked, this, &MusicPlayerWidget::forward);
 
     QAbstractButton *openButton = new QToolButton(this);
     openButton->setText(tr("..."));

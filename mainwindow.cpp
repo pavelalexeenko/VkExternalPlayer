@@ -21,11 +21,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(table, SIGNAL(cellPressed(int,int)), this, SLOT(playSong(int,int)));
 
-    getSongs();
+    QPushButton *b = new QPushButton("GetSongs");
+    connect(b, SIGNAL(clicked(bool)), this, SLOT(getSongs()));
 
     QGridLayout *layout = new QGridLayout(this);
     layout->addWidget(musicPlayerWidget, 0, 0, Qt::AlignTop);
     layout->addWidget(table, 1, 0);
+    layout->addWidget(b, 2, 0);
 }
 
 MainWindow::~MainWindow()
@@ -35,7 +37,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::getSongs()
 {
+    qDebug() << __FUNCTION__;
+
     list = InstanceFactory<AudioService>::getInstance()->getCurrentUsersAllContactAudio();
+    musicPlayerWidget->setUpPlaylist(list);
+
     for (auto item : list)
     {
         QTableWidgetItem *artistItem = new QTableWidgetItem(item.getArtist());
@@ -58,6 +64,7 @@ void MainWindow::getSongs()
 
 void MainWindow::playSong(int row, int column)
 {
-    QTableWidgetItem *item = table->item(row, 3);
-    musicPlayerWidget->playUrl(item->text());
+    //QTableWidgetItem *item = table->item(row, 3);
+    //musicPlayerWidget->playUrl(item->text());
+    musicPlayerWidget->playSongAtIndex(row);
 }

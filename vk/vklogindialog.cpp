@@ -33,7 +33,6 @@ VkLoginDialog::VkLoginDialog(QWidget *parent) : QDialog(parent)
 
 void VkLoginDialog::getTokenFromUrl(const QUrl &url)
 {
-    qDebug() << __FUNCTION__;
     QUrlQuery query(QUrl(QString(url.toString()).replace("#", "?")));
 
     if (query.hasQueryItem("error"))
@@ -46,7 +45,7 @@ void VkLoginDialog::getTokenFromUrl(const QUrl &url)
 
     if (query.hasQueryItem("access_token"))
     {
-        qDebug() << query.toString();
+        //qDebug() << query.toString();
         emit authSuccess(query.queryItemValue("access_token"), query.queryItemValue("expires_in").toInt(),
                 query.queryItemValue("user_id").toInt());
         this->done(QDialog::Accepted);
